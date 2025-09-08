@@ -26,8 +26,11 @@ let consoleBuffer = [];
 const MAX_PREVIEW_LINES = 20;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('🎛️ Popup initializing...');
+  
   // Charger la configuration
   await loadConfig();
+  console.log('📋 Config loaded:', config);
   
   // Initialiser les tabs
   initTabs();
@@ -40,6 +43,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Mettre à jour l'interface
   updateUI();
+  
+  console.log('✅ Popup ready!');
 });
 
 // Initialisation des tabs
@@ -469,10 +474,14 @@ async function loadConfig() {
 // Sauvegarder la configuration
 async function saveConfig() {
   try {
+    console.log('💾 Saving config:', config);
+    
     await browser.storage.sync.set({
       debugConfig: config,
       debugStats: stats
     });
+    
+    console.log('✅ Config saved to storage');
     
     // Notifier le background script
     await browser.runtime.sendMessage({
@@ -480,9 +489,10 @@ async function saveConfig() {
       config: config
     });
     
+    console.log('📡 Background notified');
     showNotification('Settings saved', 'success');
   } catch (error) {
-    console.error('Failed to save config:', error);
+    console.error('❌ Failed to save config:', error);
     showNotification('Failed to save settings', 'error');
   }
 }

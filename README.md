@@ -41,35 +41,70 @@ An intelligent browser debugging system that captures console errors and sends t
 
 ### Prerequisites
 - Firefox Browser (v57.0+)
-- PowerShell 5.1+
-- Claude CLI (optional but recommended)
+- Claude CLI installed and configured
 - Node.js 16+ (for MCP server)
 
-### Installation
+### 🎯 One-Click Installation
+
+**Windows (PowerShell):**
+```powershell
+# Clone and auto-install
+git clone https://github.com/xmicordix/claude-console-debugger.git
+cd claude-console-debugger
+PowerShell -ExecutionPolicy Bypass -File install.ps1
+```
+
+**Mac/Linux (Bash):**
+```bash
+# Clone and auto-install  
+git clone https://github.com/xmicordix/claude-console-debugger.git
+cd claude-console-debugger
+bash install.sh
+```
+
+### 📋 Manual Installation
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/claude-console-debugger.git
+git clone https://github.com/xmicordix/claude-console-debugger.git
 cd claude-console-debugger
+npm install
 ```
 
-2. **Install Firefox Extension**
-- Open Firefox
-- Navigate to `about:debugging`
-- Click "This Firefox"
-- Click "Load Temporary Add-on"
+2. **Configure Claude CLI MCP**
+Add to your `~/.claude.json` (or `C:\Users\USERNAME\.claude.json`):
+```json
+{
+  "projects": {
+    "YOUR_PROJECT_PATH": {
+      "mcpServers": {
+        "browser-console": {
+          "type": "stdio",
+          "command": "node",
+          "args": ["PATH_TO/claude-console-debugger/mcp-server.js"],
+          "env": {}
+        }
+      }
+    }
+  }
+}
+```
+
+3. **Install Firefox Extension**
+- Open Firefox → `about:debugging`
+- Click "This Firefox" → "Load Temporary Add-on"
 - Select `firefox-extension/manifest.json`
 
-3. **Start PowerShell Server**
-```powershell
-cd powershell
-.\start-claude-debugger.ps1 -Port 8081
+4. **Start & Test**
+```bash
+# Start MCP server
+node mcp-server.js
+
+# In Claude CLI
+claude "Y a-t-il des erreurs sur mon site actuellement ?"
 ```
 
-4. **Configure Extension**
-- Click the extension icon in Firefox
-- Add your development URLs (e.g., `localhost:3000/*`)
-- Enable desired features
+📖 **Detailed Setup Guide**: [SETUP-GUIDE.md](SETUP-GUIDE.md)
 
 ## 🏗️ Architecture
 
