@@ -17,7 +17,8 @@
       "Bash(git push:*)",
       "Bash(curl:*)",
       "Bash(node:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(where gh)"
     ],
     "deny": [],
     "ask": []

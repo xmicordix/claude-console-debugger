@@ -1,0 +1,97 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Create Firefox Extension Package
+      run: |
+        cd firefox-extension
+        zip -r ../claude-console-debugger-firefox-extension.zip . -x "*.git*" "node_modules/*"
+        
+    - name: Create Installation Package
+      run: |
+        zip -r claude-console-debugger-complete.zip . -x "*.git*" "node_modules/*" ".github/*"
+        
+    - name: Get version
+      id: version
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        name: 'Claude Console Debugger ${{ steps.version.outputs.version }}'
+        body: |
+          # 🚀 Claude Console Debugger ${{ steps.version.outputs.version }}
+          
+          ## ✨ What's New
+          - 🎯 One-click installation scripts for Windows and Mac/Linux
+          - 📋 Comprehensive setup guide with step-by-step instructions
+          - 🔧 Automatic Claude CLI MCP configuration
+          - 🦊 Professional Firefox extension with advanced popup
+          - 📊 Enhanced error tracking and analytics
+          - 🤖 Intelligent filtering to minimize token usage
+          
+          ## 📥 Quick Installation
+          
+          **Windows:**
+          ```powershell
+          # Download and extract, then:
+          PowerShell -ExecutionPolicy Bypass -File install.ps1
+          ```
+          
+          **Mac/Linux:**
+          ```bash
+          # Download and extract, then:
+          bash install.sh
+          ```
+          
+          ## 📦 Downloads
+          - **Complete Package**: Full installation with all components
+          - **Firefox Extension Only**: Just the browser extension
+          
+          ## 📖 Documentation
+          - [Setup Guide](https://github.com/xmicordix/claude-console-debugger/blob/main/SETUP-GUIDE.md)
+          - [README](https://github.com/xmicordix/claude-console-debugger/blob/main/README.md)
+          
+          ---
+          Built for developers who want intelligent debugging with Claude AI 🤖
+          
+        files: |
+          claude-console-debugger-complete.zip
+          claude-console-debugger-firefox-extension.zip
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

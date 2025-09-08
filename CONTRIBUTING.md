@@ -1,303 +1,229 @@
 # 🤝 Contributing to Claude Console Debugger
 
-We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
+Thank you for your interest in contributing! This project helps developers debug web applications more efficiently using Claude AI.
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
-- Becoming a maintainer
+## 📋 Table of Contents
+- [Getting Started](#getting-started)
+- [Development Setup](#development-setup)
+- [Project Structure](#project-structure)
+- [Contributing Guidelines](#contributing-guidelines)
+- [Pull Request Process](#pull-request-process)
+- [Testing](#testing)
+- [Code Style](#code-style)
 
-## 🚀 Development Process
-
-We use GitHub to host code, to track issues and feature requests, as well as accept pull requests.
-
-### Pull Requests Process
-
-1. **Fork** the repo and create your branch from `main`
-2. **Install** dependencies: `npm install`
-3. **Make** your changes
-4. **Test** your changes: `npm test`
-5. **Lint** your code: `npm run lint`
-6. **Update** documentation if needed
-7. **Create** a pull request with a clear title and description
-
-## 📋 Code Standards
-
-### JavaScript/Node.js
-- Use ES6+ features
-- Follow ESLint configuration
-- Use Prettier for formatting
-- Comment complex logic
-- Write tests for new features
-
-### PowerShell
-- Use approved verbs
-- Comment functions and complex logic
-- Follow PowerShell best practices
-- Handle errors gracefully
-
-### Extension Development
-- Follow Web Extensions standards
-- Use modern JavaScript (ES2020+)
-- Ensure Firefox compatibility (v57+)
-- Test in different environments
-
-## 🧪 Testing
-
-### Run Tests
-```bash
-# All tests
-npm test
-
-# Specific test file
-npm test -- path/to/test.js
-
-# Watch mode
-npm test -- --watch
-```
-
-### Extension Testing
-```bash
-# Lint extension
-web-ext lint --source-dir=firefox-extension
-
-# Run in temporary Firefox
-web-ext run --source-dir=firefox-extension
-
-# Build extension
-web-ext build --source-dir=firefox-extension
-```
-
-## 🐛 Bug Reports
-
-**Great Bug Reports** tend to have:
-
-- A quick summary and/or background
-- Steps to reproduce
-  - Be specific!
-  - Give sample code if you can
-- What you expected would happen
-- What actually happens
-- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
-
-### Bug Report Template
-```markdown
-**Describe the bug**
-A clear and concise description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Environment:**
- - OS: [e.g. Windows 10]
- - Browser: [e.g. Firefox 100.0]
- - Extension version: [e.g. 1.0.0]
- - Claude CLI version: [e.g. 1.0.108]
-
-**Additional context**
-Add any other context about the problem here.
-```
-
-## 💡 Feature Requests
-
-Feature requests are welcome! Please use the feature request template:
-
-```markdown
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is.
-
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
-```
-
-## 🎯 Areas for Contribution
-
-### High Priority
-- [ ] Chrome extension port
-- [ ] Performance optimizations
-- [ ] Better error filtering algorithms
-- [ ] Dashboard web interface
-- [ ] Mobile browser support
-
-### Medium Priority
-- [ ] Database persistence (SQLite/PostgreSQL)
-- [ ] Team collaboration features
-- [ ] CI/CD integrations
-- [ ] Slack/Discord notifications
-- [ ] Advanced analytics
-
-### Low Priority
-- [ ] Themes and customization
-- [ ] Plugin system
-- [ ] Export formats (CSV, XML)
-- [ ] Internationalization
-
-## 🔧 Development Setup
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 16+
-- Firefox 57+
-- PowerShell 5.1+
+- Firefox Browser (for extension testing)
+- Claude CLI (for full system testing)
 - Git
 
-### Setup Steps
+### Quick Setup
 ```bash
-# Clone your fork
-git clone https://github.com/yourusername/claude-console-debugger.git
-
-# Navigate to directory
+git clone https://github.com/xmicordix/claude-console-debugger.git
 cd claude-console-debugger
-
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
-
-# In another terminal, start PowerShell server
-cd powershell
-powershell -ExecutionPolicy Bypass .\start-claude-debugger.ps1
 ```
 
-### Project Structure
-```
-claude-console-debugger/
-├── firefox-extension/     # Browser extension code
-├── powershell/           # PowerShell server
-├── tests/               # Test files
-├── docs/                # Documentation
-└── tools/               # Development tools
+## 🛠️ Development Setup
+
+### 1. Install Dependencies
+```bash
+npm install
 ```
 
-## 📝 Commit Messages
+### 2. Load Extension in Firefox
+1. Open Firefox → `about:debugging`
+2. Click "This Firefox" → "Load Temporary Add-on"
+3. Select `firefox-extension/manifest.json`
 
-Use conventional commits:
+### 3. Start MCP Server
+```bash
+node mcp-server.js
+```
 
-- `feat:` new feature
-- `fix:` bug fix
+### 4. Test the System
+- Navigate to any webpage with console output
+- Check extension popup for captured logs
+- Verify MCP server receives data at `http://localhost:8081`
+
+## 📁 Project Structure
+
+```
+├── firefox-extension/     # Browser extension components
+│   ├── manifest.json     # Extension configuration
+│   ├── background.js     # Service worker & error processing
+│   ├── content.js        # Content script injection
+│   ├── injected.js       # Page-level console interception
+│   └── popup-advanced.*  # Configuration UI
+├── .github/              # GitHub templates & workflows
+├── powershell/           # Legacy PowerShell server
+├── mcp-server.js         # Main Node.js MCP server
+├── install.ps1          # Windows installation script
+└── install.sh           # Mac/Linux installation script
+```
+
+## 🎯 Contributing Guidelines
+
+### What We're Looking For
+- 🐛 **Bug fixes** - Especially extension compatibility issues
+- ✨ **Feature enhancements** - Better error detection, UI improvements
+- 📚 **Documentation** - Setup guides, troubleshooting, examples
+- 🧪 **Tests** - Unit tests, integration tests, browser testing
+- 🌐 **Browser support** - Chrome extension port, Safari support
+
+### Areas That Need Help
+1. **Chrome Extension Port** - Adapting to Manifest V3
+2. **Error Pattern Recognition** - Smarter filtering algorithms
+3. **Performance Optimization** - Reduce memory usage and latency
+4. **Dashboard Interface** - Web-based monitoring console
+5. **CI/CD Pipeline** - Automated testing and deployment
+
+## 🔄 Pull Request Process
+
+### 1. Create a Feature Branch
+```bash
+git checkout -b feature/your-feature-name
+# or
+git checkout -b bugfix/issue-description
+```
+
+### 2. Make Your Changes
+- Follow the existing code style
+- Add comments for complex logic
+- Update documentation as needed
+
+### 3. Test Your Changes
+```bash
+# Test extension in Firefox
+# Start MCP server and verify functionality
+# Run any relevant tests
+npm test
+```
+
+### 4. Commit Your Changes
+```bash
+git add .
+git commit -m "feat: add your feature description"
+# or
+git commit -m "fix: resolve issue with component"
+```
+
+Follow [Conventional Commits](https://conventionalcommits.org/) format:
+- `feat:` new features
+- `fix:` bug fixes  
 - `docs:` documentation changes
-- `style:` formatting, missing semicolons, etc
-- `refactor:` code restructuring
-- `test:` adding missing tests
+- `style:` formatting changes
+- `refactor:` code refactoring
+- `test:` adding tests
 - `chore:` maintenance tasks
 
-Examples:
+### 5. Push and Create PR
+```bash
+git push origin feature/your-feature-name
 ```
-feat: add URL filtering to extension popup
-fix: resolve PowerShell server memory leak
-docs: update installation instructions
+
+Create a pull request with:
+- **Clear title** describing the change
+- **Detailed description** of what was changed and why
+- **Screenshots** if UI changes are involved
+- **Testing instructions** for reviewers
+
+## 🧪 Testing
+
+### Manual Testing Checklist
+- [ ] Extension loads without errors in Firefox
+- [ ] Console logs are captured correctly
+- [ ] MCP server receives and processes data
+- [ ] Configuration settings persist
+- [ ] Error filtering works as expected
+- [ ] No memory leaks during extended use
+
+### Automated Testing
+```bash
+# Run existing tests
+npm test
+
+# Add new tests in test/ directory
 ```
+
+### Browser Testing
+Test across different scenarios:
+- Different websites (React, Vue, vanilla JS)
+- Various error types (JavaScript, network, CSP)
+- Multiple tabs and windows
+- Extension reload/disable/enable
 
 ## 🎨 Code Style
 
-### JavaScript
+### JavaScript/Node.js
+- Use ES6+ features
+- Prefer `const` and `let` over `var`
+- Use meaningful variable names
+- Add JSDoc comments for functions
+
 ```javascript
-// Good
-const analyzeError = async (errorData) => {
-  try {
-    const result = await claudeAPI.analyze(errorData);
-    return result;
-  } catch (error) {
-    console.error('Analysis failed:', error);
-    throw error;
-  }
-};
-
-// Avoid
-function analyzeError(errorData) {
-  return claudeAPI.analyze(errorData).then(result => {
-    return result;
-  }).catch(error => {
-    console.error('Analysis failed:', error);
-    throw error;
-  });
+/**
+ * Processes console error and enriches with context
+ * @param {Object} errorData - Raw error from browser
+ * @param {string} url - Page URL where error occurred
+ * @returns {Object} Enriched error object
+ */
+function processError(errorData, url) {
+  // Implementation
 }
 ```
 
-### PowerShell
-```powershell
-# Good
-function Invoke-ErrorAnalysis {
-    param(
-        [Parameter(Mandatory = $true)]
-        [object]$ErrorData
-    )
-    
-    try {
-        $analysis = Start-ClaudeAnalysis -Data $ErrorData
-        return $analysis
-    }
-    catch {
-        Write-Error "Analysis failed: $($_.Exception.Message)"
-        throw
-    }
-}
+### Firefox Extension
+- Follow Mozilla's [WebExtension guidelines](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
+- Use consistent naming conventions
+- Handle permissions gracefully
+- Minimize background script usage
 
-# Follow PowerShell naming conventions
-# Use approved verbs (Get, Set, New, Remove, etc.)
-# Use PascalCase for functions and parameters
-```
+### Documentation
+- Use clear, concise language
+- Include code examples
+- Add screenshots for UI features
+- Keep README and guides updated
 
-## 🏷️ Labels
+## 🏷️ Issue Labels
 
-We use these labels to categorize issues:
+When creating issues or PRs, use appropriate labels:
 
-- `bug` - Something isn't working
-- `enhancement` - New feature or request
-- `good first issue` - Good for newcomers
-- `help wanted` - Extra attention is needed
-- `documentation` - Improvements or additions to docs
-- `question` - Further information is requested
-- `wontfix` - This will not be worked on
+- **Type Labels**
+  - `bug` - Something isn't working
+  - `enhancement` - New feature or request
+  - `documentation` - Documentation improvements
+  - `question` - Questions or support requests
 
-## 🚦 Review Process
+- **Priority Labels**
+  - `priority-high` - Critical issues
+  - `priority-medium` - Important improvements
+  - `priority-low` - Nice-to-have features
 
-1. **Automated checks** must pass (tests, linting)
-2. **At least one reviewer** approval required
-3. **All conversations** must be resolved
-4. **Branch** must be up to date with main
+- **Component Labels**
+  - `extension` - Firefox extension related
+  - `mcp-server` - MCP server related
+  - `installation` - Setup/installation issues
 
-### Review Checklist
-- [ ] Code follows project style
-- [ ] Tests are included and pass
-- [ ] Documentation is updated
-- [ ] No breaking changes (or properly documented)
-- [ ] Performance impact considered
-- [ ] Security implications reviewed
+## ❓ Getting Help
 
-## 📄 License
+- **Documentation**: Check [SETUP-GUIDE.md](SETUP-GUIDE.md) and [README.md](README.md)
+- **Issues**: Search existing [GitHub issues](https://github.com/xmicordix/claude-console-debugger/issues)
+- **Questions**: Open a new issue with the `question` label
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+## 🙏 Recognition
 
-## 🙋‍♀️ Questions?
+All contributors will be recognized in our README and release notes. We appreciate:
+- Code contributions (features, fixes, tests)
+- Documentation improvements
+- Bug reports with detailed reproduction steps
+- Feature suggestions with clear use cases
+- Community support and help
 
-Feel free to:
-- Open an issue with the `question` label
-- Join our Discord: [discord.gg/example](https://discord.gg/example)
-- Email us: contribute@example.com
+---
 
-## 🎉 Recognition
+**Ready to contribute?** 🚀 Start by checking our [open issues](https://github.com/xmicordix/claude-console-debugger/issues) or propose something new!
 
-Contributors will be:
-- Listed in README.md
-- Mentioned in release notes
-- Invited to maintainer discussions (for significant contributions)
-
-Thank you for contributing! 🚀
+Thank you for helping make web debugging smarter with Claude AI! ❤️
