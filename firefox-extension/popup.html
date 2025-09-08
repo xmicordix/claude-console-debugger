@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 350px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .header h2 {
+      color: #333;
+      margin: 0;
+      font-size: 18px;
+    }
+    
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f5f5f5;
+    }
+    
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #4CAF50;
+      margin-right: 8px;
+    }
+    
+    .status-indicator.inactive {
+      background: #f44336;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .form-group input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+    
+    .button {
+      width: 100%;
+      background: #4CAF50;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    .button:hover {
+      background: #45a049;
+    }
+    
+    .button.success {
+      background: #2196F3;
+    }
+    
+    .info {
+      background: #e3f2fd;
+      border: 1px solid #2196F3;
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>🤖 Claude Console Debugger</h2>
+  </div>
+  
+  <div class="status">
+    <div style="display: flex; align-items: center;">
+      <div class="status-indicator" id="statusIndicator"></div>
+      <span id="statusText">Loading...</span>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="endpoint">PowerShell Server Endpoint:</label>
+    <input type="text" id="endpoint" placeholder="http://localhost:8080/error">
+  </div>
+  
+  <div class="checkbox-group">
+    <input type="checkbox" id="enabledCheck">
+    <label for="enabledCheck">Enable error monitoring</label>
+  </div>
+  
+  <button class="button" id="saveBtn">Save Settings</button>
+  
+  <div class="info">
+    💡 Make sure your PowerShell server is running before enabling monitoring.
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

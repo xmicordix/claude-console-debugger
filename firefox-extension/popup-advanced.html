@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 450px;
+      height: 600px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: white;
+      margin: 10px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    /* Header avec tabs */
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px;
+    }
+    
+    .header h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+    
+    .status-dot.inactive {
+      background: #ef4444;
+      animation: none;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 3px;
+      margin-top: 10px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      background: white;
+      color: #667eea;
+      font-weight: 500;
+    }
+    
+    .tab:hover:not(.active) {
+      color: white;
+    }
+    
+    /* Content area */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* URL Filter Section */
+    .url-filter {
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .url-list {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    
+    .url-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    
+    .url-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .url-text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #4b5563;
+    }
+    
+    .url-remove {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+    
+    .url-remove:hover {
+      background: #dc2626;
+    }
+    
+    .url-add {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .url-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    
+    .url-input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .btn-add {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .btn-add:hover {
+      background: #5a67d8;
+    }
+    
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .quick-btn {
+      padding: 12px;
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .quick-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .quick-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: transparent;
+    }
+    
+    .quick-btn-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+    
+    .quick-btn-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    /* Settings */
+    .setting-group {
+      margin-bottom: 15px;
+    }
+    
+    .setting-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .setting-text {
+      font-size: 13px;
+      color: #374151;
+    }
+    
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+    
+    .toggle input {
+      display: none;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #cbd5e1;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background: #667eea;
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+    }
+    
+    /* Stats Dashboard */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+    
+    /* Console Preview */
+    .console-preview {
+      background: #1f2937;
+      color: #f3f4f6;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 11px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .console-line {
+      margin-bottom: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .console-time {
+      color: #6b7280;
+      flex-shrink: 0;
+    }
+    
+    .console-type {
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+    
+    .console-type.error {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .console-type.warn {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .console-type.log {
+      background: #6b7280;
+      color: white;
+    }
+    
+    .console-message {
+      flex: 1;
+      word-break: break-word;
+    }
+    
+    /* Footer */
+    .footer {
+      padding: 15px;
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-primary {
+      flex: 1;
+      padding: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: transform 0.2s;
+    }
+    
+    .btn-primary:hover {
+      transform: scale(1.02);
+    }
+    
+    .btn-secondary {
+      padding: 10px 20px;
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    
+    .btn-secondary:hover {
+      background: #f3f4f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h2>
+        🤖 Claude Console Debugger
+        <span class="status-badge">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Active</span>
+        </span>
+      </h2>
+      
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="monitor">Monitor</button>
+        <button class="tab" data-tab="settings">Settings</button>
+        <button class="tab" data-tab="stats">Analytics</button>
+      </div>
+    </div>
+    
+    <!-- Content -->
+    <div class="content">
+      <!-- Monitor Tab -->
+      <div class="tab-content active" id="monitor">
+        <!-- URL Filter -->
+        <div class="url-filter">
+          <div class="section-title">
+            🎯 Active URLs (Only these will be monitored)
+          </div>
+          <div class="url-list" id="urlList">
+            <!-- URLs will be added here -->
+          </div>
+          <div class="url-add">
+            <input type="text" class="url-input" id="urlInput" placeholder="https://localhost:3000/*">
+            <button class="btn-add" id="addUrlBtn">Add URL</button>
+          </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="quick-btn" id="currentTabBtn">
+            <div class="quick-btn-icon">📍</div>
+            <div class="quick-btn-text">Current Tab Only</div>
+          </button>
+          <button class="quick-btn" id="pauseBtn">
+            <div class="quick-btn-icon">⏸️</div>
+            <div class="quick-btn-text">Pause Capture</div>
+          </button>
+          <button class="quick-btn" id="clearBtn">
+            <div class="quick-btn-icon">🗑️</div>
+            <div class="quick-btn-text">Clear Buffer</div>
+          </button>
+          <button class="quick-btn" id="exportBtn">
+            <div class="quick-btn-icon">💾</div>
+            <div class="quick-btn-text">Export Logs</div>
+          </button>
+        </div>
+        
+        <!-- Console Preview -->
+        <div class="section-title">
+          📺 Live Console Preview
+        </div>
+        <div class="console-preview" id="consolePreview">
+          <!-- Live logs will appear here -->
+        </div>
+      </div>
+      
+      <!-- Settings Tab -->
+      <div class="tab-content" id="settings">
+        <div class="setting-group">
+          <label class="setting-label">
+            <span class="setting-text">🚨 Capture Errors Only</span>
+            <div class="toggle">
+              <input type="checkbox" id="errorsOnly">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-group">
+          <label class="setting-label">
+            <span class="setting-text">📊 Include Network Calls</span>
+            <div class="toggle">
+              <input type="checkbox" id="includeNetwork" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-group">
+          <label class="setting-label">
+            <span class="setting-text">⚡ Auto-Fix Mode</span>
+            <div class="toggle">
+              <input type="checkbox" id="autoFix">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-group">
+          <label class="setting-label">
+            <span class="setting-text">🔔 Desktop Notifications</span>
+            <div class="toggle">
+              <input type="checkbox" id="notifications">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <div class="setting-group">
+          <label class="setting-label">
+            <span class="setting-text">🎯 Smart Filtering</span>
+            <div class="toggle">
+              <input type="checkbox" id="smartFilter" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <div class="section-title" style="margin-top: 20px;">
+          🔌 MCP Server Endpoint
+        </div>
+        <input type="text" class="url-input" id="mcpEndpoint" value="http://localhost:8081/error">
+        
+        <div class="section-title" style="margin-top: 20px;">
+          📦 Buffer Size
+        </div>
+        <input type="range" id="bufferSize" min="100" max="5000" value="1000" style="width: 100%;">
+        <div style="text-align: center; font-size: 12px; color: #6b7280;">
+          <span id="bufferSizeValue">1000</span> messages
+        </div>
+      </div>
+      
+      <!-- Analytics Tab -->
+      <div class="tab-content" id="stats">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="errorCount">0</div>
+            <div class="stat-label">Errors Captured</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="fixCount">0</div>
+            <div class="stat-label">Auto-Fixed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="sessionTime">0m</div>
+            <div class="stat-label">Session Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="savedTime">0h</div>
+            <div class="stat-label">Time Saved</div>
+          </div>
+        </div>
+        
+        <div class="section-title">
+          📈 Error Patterns
+        </div>
+        <div class="console-preview" style="background: #f9fafb; color: #374151;">
+          <div>TypeError: 45% (12 occurrences)</div>
+          <div>NetworkError: 30% (8 occurrences)</div>
+          <div>ReferenceError: 25% (7 occurrences)</div>
+        </div>
+        
+        <div class="section-title" style="margin-top: 15px;">
+          💡 AI Insights
+        </div>
+        <div style="padding: 10px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; font-size: 13px; color: #166534;">
+          Claude suggests: "Enable TypeScript to prevent 70% of these errors"
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <button class="btn-secondary" id="openDashboard">Dashboard</button>
+      <button class="btn-primary" id="saveSettings">Save & Apply</button>
+    </div>
+  </div>
+  
+  <script src="popup-advanced.js"></script>
+</body>
+</html>

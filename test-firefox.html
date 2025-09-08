@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🦊 Test Claude Firefox</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; padding: 20px; background: #f0f8ff; }
+        h1 { color: #FF6B35; text-align: center; }
+        button { background: #FF6B35; color: white; border: none; padding: 15px 25px; margin: 10px; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #e55a2b; }
+        .status { background: #e8f5e8; border: 1px solid #4CAF50; padding: 15px; border-radius: 5px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>🦊 Test Claude Debugger Firefox</h1>
+    
+    <div class="status">
+        <strong>✅ Statut :</strong><br>
+        • Serveur PowerShell : Port 8081 ✅<br>
+        • Extension Firefox : Configurée ✅<br>
+        • Claude CLI : v1.0.108 ✅<br>
+        <strong>Prêt pour les tests ! 🚀</strong>
+    </div>
+
+    <h3>🧪 Tests d'Erreurs</h3>
+    <button onclick="testError1()">Test Erreur Simple</button>
+    <button onclick="testError2()">Test Console Error</button>
+    <button onclick="testError3()">Test Erreur Complexe</button>
+
+    <script>
+        console.log('🦊 Page Firefox chargée pour Claude Debugger!');
+        
+        function testError1() {
+            console.log('🧪 Test 1: Erreur JavaScript simple');
+            // Erreur volontaire
+            undefinedFunction();
+        }
+
+        function testError2() {
+            console.log('🧪 Test 2: Console Error');
+            console.error('🚨 Test Error from Firefox for Claude Analysis!', {
+                component: 'test-page',
+                severity: 'high',
+                timestamp: Date.now()
+            });
+        }
+
+        function testError3() {
+            console.log('🧪 Test 3: Erreur avec stack trace');
+            try {
+                let obj = null;
+                obj.someMethod(); // TypeError
+            } catch (error) {
+                console.error('Erreur capturée:', error);
+                throw error; // Re-throw pour déclencher window.onerror
+            }
+        }
+    </script>
+</body>
+</html>
