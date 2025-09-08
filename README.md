@@ -3,6 +3,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Firefox](https://img.shields.io/badge/Firefox-Extension-orange)](https://www.mozilla.org/firefox/)
 [![Claude CLI](https://img.shields.io/badge/Claude-CLI-blue)](https://claude.ai)
+[![GitHub release](https://img.shields.io/github/v/release/xmicordix/claude-console-debugger)](https://github.com/xmicordix/claude-console-debugger/releases)
+[![GitHub issues](https://img.shields.io/github/issues/xmicordix/claude-console-debugger)](https://github.com/xmicordix/claude-console-debugger/issues)
+[![GitHub stars](https://img.shields.io/github/stars/xmicordix/claude-console-debugger)](https://github.com/xmicordix/claude-console-debugger/stargazers)
+[![CI Status](https://github.com/xmicordix/claude-console-debugger/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/xmicordix/claude-console-debugger/actions)
 
 An intelligent browser debugging system that captures console errors and sends them to Claude AI for real-time analysis and automatic fixes.
 
