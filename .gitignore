@@ -41,9 +41,20 @@ lerna-debug.log*
 ehthumbs.db
 Thumbs.db
 
-# MCP Configuration (contains tokens)
+# Claude CLI personal configuration (contains personal paths and tokens)
+.claude/
 mcp-config.json
-.claude_config
+*.local.json
+*config.local.*
+*settings.local.*
+
+# Personal tokens and secrets
+*token*
+*secret*
+*key*
+*.pem
+*.p12
+*.pfx
 
 # Extension build artifacts
 firefox-extension/web-ext-artifacts/

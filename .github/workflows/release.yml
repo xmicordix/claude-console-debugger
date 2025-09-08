@@ -51,17 +51,25 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ steps.version.outputs.version }}
-        name: 'Claude Console Debugger ${{ steps.version.outputs.version }}'
+        name: 'Claude Console Debugger ${{ steps.version.outputs.version }} (Beta)'
         body: |
-          # 🚀 Claude Console Debugger ${{ steps.version.outputs.version }}
+          # 🚀 Claude Console Debugger ${{ steps.version.outputs.version }} (Beta Release)
           
-          ## ✨ What's New
-          - 🎯 One-click installation scripts for Windows and Mac/Linux
-          - 📋 Comprehensive setup guide with step-by-step instructions
-          - 🔧 Automatic Claude CLI MCP configuration
-          - 🦊 Professional Firefox extension with advanced popup
-          - 📊 Enhanced error tracking and analytics
-          - 🤖 Intelligent filtering to minimize token usage
+          > **⚠️ This is a beta version** - Please test thoroughly before production use
+          
+          ## ✨ Beta Features
+          - 🎯 Experimental installation scripts for Windows and Mac/Linux
+          - 📋 Comprehensive setup guide (manual configuration required)
+          - 🔧 Basic Claude CLI MCP integration
+          - 🦊 Firefox extension with debugging popup
+          - 📊 Console error capture and analytics
+          - 🤖 Smart filtering to minimize token usage (beta)
+          
+          ## ⚠️ Known Limitations
+          - Installation scripts require manual path configuration
+          - Some values need to be manually edited post-install
+          - Chrome extension not yet available
+          - Limited error pattern recognition
           
           ## 📥 Quick Installation
           
@@ -92,6 +100,6 @@ jobs:
           claude-console-debugger-complete.zip
           claude-console-debugger-firefox-extension.zip
         draft: false
-        prerelease: false
+        prerelease: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
